@@ -1,5 +1,5 @@
   <clouds>
-    <org.csanchez.jenkins.plugins.kubernetes.KubernetesCloud plugin="kubernetes@0.5">
+    <org.csanchez.jenkins.plugins.kubernetes.KubernetesCloud plugin="kubernetes@0.8">
       <name>slave</name>
       <templates>
         <org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
@@ -16,9 +16,9 @@
       </templates>
       <serverUrl>https://openshift.default.svc.cluster.local</serverUrl>
       <skipTlsVerify>true</skipTlsVerify>
-      <namespace>jenkins</namespace>
-      <jenkinsUrl>http://jenkins.jenkins.svc.cluster.local:8080</jenkinsUrl>
-      <jenkinsTunnel>jenkins-slave.jenkins.svc.cluster.local:50000</jenkinsTunnel>
+      <namespace>ci</namespace>
+      <jenkinsUrl>http://jenkins.ci.svc.cluster.local:8080</jenkinsUrl>
+      <jenkinsTunnel>jenkins-slave.ci.svc.cluster.local:50000</jenkinsTunnel>
       <credentialsId>kubernetes</credentialsId>
       <containerCap>10</containerCap>
       <retentionTimeout>5</retentionTimeout>
