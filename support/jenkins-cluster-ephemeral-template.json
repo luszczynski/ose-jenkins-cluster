@@ -85,34 +85,6 @@
                 "sessionAffinity": "None"
             }
         },
-        {
-            "kind": "Service",
-            "apiVersion": "v1",
-            "metadata": {
-                "name": "${APPLICATION_NAME}-slave",
-                "creationTimestamp": null,
-                "labels": {
-                    "application": "${APPLICATION_NAME}"
-                }
-            },
-            "spec": {
-                "ports": [
-                    {
-                        "name": "slave",
-                        "protocol": "TCP",
-                        "port": 50000,
-                        "targetPort": 50000,
-                        "nodePort": 0
-                    }
-                ],
-                "selector": {
-                    "name": "${APPLICATION_NAME}"
-                },
-                "portalIP": "",
-                "type": "ClusterIP",
-                "sessionAffinity": "None"
-            }
-        },
 		{
             "kind": "BuildConfig",
             "apiVersion": "v1",

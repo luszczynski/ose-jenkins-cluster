@@ -45,7 +45,7 @@ elif [[ $# -lt 1 ]] || [[ "$1" == "-"* ]]; then
   noProxy=$(echo $no_proxy | sed 's/,/|/g')
   PROXY_PARAMS="${PROXY_PARAMS} -Dhttp.nonProxyHosts=$noProxy|${JENKINS_SERVICE_HOST}|${JENKINS_SLAVE_SERVICE_HOST}"
 
-  echo Running java ${PROXY_PARAMS} $JAVA_OPTS -jar $JAR -fsroot $HOME $PARAMS "$@"
-  exec java "${PROXY_PARAMS}" $JAVA_OPTS -jar $JAR -fsroot $HOME $PARAMS "$@"
+  echo "Running java ${PROXY_PARAMS} $JAVA_OPTS -jar $JAR -fsroot $HOME $PARAMS \"$@\""
+  exec java ${PROXY_PARAMS} $JAVA_OPTS -jar $JAR -fsroot $HOME $PARAMS "$@"
 
 fi
