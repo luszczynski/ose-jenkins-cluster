@@ -73,7 +73,7 @@
                         "name": "remoting",
                         "protocol": "TCP",
                         "port": "${SLAVE_REMOTE_PORT}",
-                        "targetPort": "${SLAVE_REMOTE_PORT}",
+                        "targetPort": 50000,
                         "nodePort": 0
                     }
                 ],
