@@ -1,0 +1,8 @@
+git:2.4.4
+scm-api:1.0
+git-client:1.19.6
+greenballs:1.15
+kubernetes:0.7
+durable-task:1.12
+swarm:2.2
+credentials:2.1.4

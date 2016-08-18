@@ -452,7 +452,7 @@
         {
             "name": "JENKINS_IMAGE_TAG",
             "description": "Base OpenShift Jenkins Image Tag",
-            "value": "ose-jenkins:1.609-15"
+            "value": "ose-jenkins:latest"
         },
         {
             "name": "GIT_URI",

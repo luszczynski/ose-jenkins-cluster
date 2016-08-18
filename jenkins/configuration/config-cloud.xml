@@ -1,5 +1,5 @@
   <clouds>
-    <org.csanchez.jenkins.plugins.kubernetes.KubernetesCloud plugin="kubernetes@0.8">
+    <org.csanchez.jenkins.plugins.kubernetes.KubernetesCloud plugin="kubernetes@0.7">
       <name>slave</name>
       <templates>
         <org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
