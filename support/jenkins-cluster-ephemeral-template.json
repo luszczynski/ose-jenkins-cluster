@@ -122,11 +122,11 @@
                          "uri": "${GIT_URI}",
                          "ref": "${GIT_REF}"
                      },
-                     "contextDir": "jenkins"
+                     "contextDir": "${CONTEXT_DIR_MASTER}"
                 },
                 "strategy": {
-                    "type": "Docker",
-                    "dockerStrategy": {
+                    "sourceStrategy": {
+                        "type": "Source",
                         "from": {
                             "kind": "ImageStreamTag",
                             "name": "${JENKINS_IMAGE_TAG}"
@@ -446,6 +446,11 @@
             "name": "GIT_REF",
             "description": "Git Branch",
             "value": "master"
+        },
+        {
+            "name": "CONTEXT_DIR_MASTER",
+            "description": "Context dir",
+            "value": "jenkins"
         },
         {
             "name": "EXECUTORS",
