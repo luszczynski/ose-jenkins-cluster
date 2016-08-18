@@ -210,6 +210,9 @@
             },
             "spec": {
                 "host": "${APPLICATION_HOSTNAME}",
+                "port": {
+                    "targetPort": "web"
+                },
                 "to": {
                     "kind": "Service",
                     "name": "${APPLICATION_NAME}"
