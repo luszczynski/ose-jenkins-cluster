@@ -46,6 +46,18 @@ elif [[ $# -lt 1 ]] || [[ "$1" == "-"* ]]; then
   PROXY_PARAMS="${PROXY_PARAMS} -Dhttp.nonProxyHosts=$noProxy|${JENKINS_SERVICE_HOST}|${JENKINS_SLAVE_SERVICE_HOST}"
 
   echo "Running java ${PROXY_PARAMS} $JAVA_OPTS -jar $JAR -fsroot $HOME $PARAMS \"$@\""
-  exec java ${PROXY_PARAMS} $JAVA_OPTS -jar $JAR -fsroot $HOME $PARAMS "$@"
+  exec java ${PROXY_PARAMS} $JAVA_OPTS -jar $JAR -fsroot $HOME $PARAMS "$@" > /tmp/tmp.log 2>&1 &
+
+  pid_last_command=$(echo $!)
+
+  until grep -qv "Setting up slave:" /tmp/tmp.log; do
+    echo "Sleeping..."
+    sleep 1
+  done
+
+  node=$(grep "Setting up slave:" /tmp/tmp.log | cut -d: -f3 | tr -d ' ')
+  kill $pid_last_command
+
+  exec java -jar /opt/jenkins-slave/bin/slave.jar -jnlpUrl http://$JENKINS_SERVICE_HOST:$JENKINS_SERVICE_PORT/computer/$node/slave-agent.jnlp  -jnlpCredentials admin:password
 
 fi

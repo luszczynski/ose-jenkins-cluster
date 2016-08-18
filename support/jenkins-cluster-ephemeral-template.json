@@ -72,8 +72,8 @@
                     {
                         "name": "remoting",
                         "protocol": "TCP",
-                        "port": 50000,
-                        "targetPort": 50000,
+                        "port": "${SLAVE_REMOTE_PORT}",
+                        "targetPort": "${SLAVE_REMOTE_PORT}",
                         "nodePort": 0
                     }
                 ],
@@ -249,7 +249,7 @@
                                     },
                                     {
                                         "name": "slave",
-                                        "containerPort": 50000,
+                                        "containerPort": "${SLAVE_REMOTE_PORT}",
                                         "protocol": "TCP"
                                     }
                                 ],
@@ -443,6 +443,11 @@
             "name": "SLAVE_RECCURENCE_PERIOD",
             "description": "Interval of time to check whether to provision additional slave nodes",
             "value": "500"
+        },
+        {
+            "name": "SLAVE_REMOTE_PORT",
+            "description": "Slave remote port",
+            "value": "50000"
         }
     ],
     "labels": {
