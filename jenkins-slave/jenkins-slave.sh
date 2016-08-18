@@ -36,7 +36,7 @@ elif [[ $# -lt 1 ]] || [[ "$1" == "-"* ]]; then
   export NO_PROXY="$NO_PROXY,${JENKINS_SERVICE_HOST},${JENKINS_SLAVE_SERVICE_HOST}"
 
   if [[ "$@" != *"-master "* ]] && [ ! -z "$JENKINS_PORT_8080_TCP_ADDR" ]; then
-	PARAMS="-master http://${JENKINS_SERVICE_HOST}:${JENKINS_SERVICE_PORT}${JENKINS_CONTEXT_PATH} -tunnel ${JENKINS_SLAVE_SERVICE_HOST}:${JENKINS_SLAVE_SERVICE_PORT}${JENKINS_SLAVE_CONTEXT_PATH} -username ${master_username} -password ${master_password} -executors ${slave_executors}"
+	PARAMS="-master http://${JENKINS_SERVICE_HOST}:${JENKINS_SERVICE_PORT}${JENKINS_CONTEXT_PATH} -tunnel ${JENKINS_SERVICE_HOST}:${JENKINS_SERVICE_PORT_REMOTING} -username ${master_username} -password ${master_password} -executors ${slave_executors}"
   fi
 
   proxyHost=$(echo $http_proxy | sed 's/http:\/\///g'| cut -d: -f1)
