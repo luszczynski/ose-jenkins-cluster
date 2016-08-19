@@ -68,33 +68,12 @@
                         "port": 8080,
                         "targetPort": 8080,
                         "nodePort": 0
-                    }
-                ],
-                "selector": {
-                    "name": "${APPLICATION_NAME}"
-                },
-                "portalIP": "",
-                "type": "ClusterIP",
-                "sessionAffinity": "None"
-            }
-        },
-        {
-            "kind": "Service",
-            "apiVersion": "v1",
-            "metadata": {
-                "name": "${APPLICATION_NAME}-slave",
-                "creationTimestamp": null,
-                "labels": {
-                    "application": "${APPLICATION_NAME}"
-                }
-            },
-            "spec": {
-                "ports": [
+                    },
                     {
-                        "name": "slave",
+                        "name": "remoting",
                         "protocol": "TCP",
-                        "port": 50000,
-                        "targetPort": 50000,
+                        "port": "${SLAVE_REMOTE_PORT}",
+                        "targetPort": 49187,
                         "nodePort": 0
                     }
                 ],
@@ -122,11 +101,11 @@
                          "uri": "${GIT_URI}",
                          "ref": "${GIT_REF}"
                      },
-                     "contextDir": "jenkins"
+                     "contextDir": "${CONTEXT_DIR_MASTER}"
                 },
                 "strategy": {
-                    "type": "Docker",
-                    "dockerStrategy": {
+                    "sourceStrategy": {
+                        "type": "Source",
                         "from": {
                             "kind": "ImageStreamTag",
                             "name": "${JENKINS_IMAGE_TAG}"
@@ -203,6 +182,9 @@
             },
             "spec": {
                 "host": "${APPLICATION_HOSTNAME}",
+                "port": {
+                    "targetPort": "web"
+                },
                 "to": {
                     "kind": "Service",
                     "name": "${APPLICATION_NAME}"
@@ -284,7 +266,7 @@
                                     },
                                     {
                                         "name": "slave",
-                                        "containerPort": 50000,
+                                        "containerPort": "${SLAVE_REMOTE_PORT}",
                                         "protocol": "TCP"
                                     }
                                 ],
@@ -465,6 +447,11 @@
             "value": "master"
         },
         {
+            "name": "CONTEXT_DIR_MASTER",
+            "description": "Context dir",
+            "value": "jenkins"
+        },
+        {
             "name": "EXECUTORS",
             "description": "Number of executors per slave agent",
             "value": "1"
@@ -473,6 +460,11 @@
             "name": "SLAVE_RECCURENCE_PERIOD",
             "description": "Interval of time to check whether to provision additional slave nodes",
             "value": "500"
+        },
+	    {
+            "name": "SLAVE_REMOTE_PORT",
+            "description": "Slave remote port",
+            "value": "49187"
         },
         {
             "name": "VOLUME_CAPACITY",
