@@ -43,21 +43,26 @@ elif [[ $# -lt 1 ]] || [[ "$1" == "-"* ]]; then
   proxyPort=$(echo $http_proxy | sed 's/http:\/\///g'| cut -d: -f2)
   PROXY_PARAMS="-Dhttp.proxyHost=$proxyHost -Dhttp.proxyPort=$proxyPort"
   noProxy=$(echo $no_proxy | sed 's/,/|/g')
-  PROXY_PARAMS="${PROXY_PARAMS} -Dhttp.nonProxyHosts=$noProxy|${JENKINS_SERVICE_HOST}|${JENKINS_SLAVE_SERVICE_HOST}"
+  PROXY_PARAMS="${PROXY_PARAMS} -Dhttp.nonProxyHosts=$noProxy|${JENKINS_SERVICE_HOST}"
 
-  echo "Running java ${PROXY_PARAMS} $JAVA_OPTS -jar $JAR -fsroot $HOME $PARAMS \"$@\""
-  exec java ${PROXY_PARAMS} $JAVA_OPTS -jar $JAR -fsroot $HOME $PARAMS "$@" > /tmp/tmp.log 2>&1 &
+  if [ "x$proxyHost" == "x" ]; then
+    echo "Running java $JAVA_OPTS -jar $JAR -fsroot $HOME $PARAMS \"$@\""
+    exec java $JAVA_OPTS -jar $JAR -fsroot $HOME $PARAMS "$@" > /tmp/tmp.log 2>&1 &
+  else
+    echo "Running java ${PROXY_PARAMS} $JAVA_OPTS -jar $JAR -fsroot $HOME $PARAMS \"$@\""
+    exec java ${PROXY_PARAMS} $JAVA_OPTS -jar $JAR -fsroot $HOME $PARAMS "$@" > /tmp/tmp.log 2>&1 &
+  fi
 
   pid_last_command=$(echo $!)
 
-  until grep -qv "Setting up slave:" /tmp/tmp.log; do
+  until grep -q "Setting up slave:" /tmp/tmp.log; do
     echo "Sleeping..."
-    sleep 1
+    sleep 2
   done
 
   node=$(grep "Setting up slave:" /tmp/tmp.log | cut -d: -f3 | tr -d ' ')
   kill $pid_last_command
 
-  exec java -jar /opt/jenkins-slave/bin/slave.jar -jnlpUrl http://$JENKINS_SERVICE_HOST:$JENKINS_SERVICE_PORT/computer/$node/slave-agent.jnlp  -jnlpCredentials admin:password
+  exec java -jar /opt/jenkins-slave/bin/slave.jar -jnlpUrl http://$JENKINS_SERVICE_HOST:$JENKINS_SERVICE_PORT/computer/$node/slave-agent.jnlp -jnlpCredentials admin:password
 
 fi
